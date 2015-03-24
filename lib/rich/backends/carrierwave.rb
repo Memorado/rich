@@ -9,6 +9,8 @@ module Rich
 
       included do
         mount_uploader :rich_file_file_name, RichFileUploader
+        alias_method :rich_file, :rich_file_file_name
+        alias_method :rich_file=, :rich_file_file_name=
 
         before_validation :update_rich_file_attributes
 
@@ -22,13 +24,6 @@ module Rich
         after_save :clear_uri_cache
       end
   
-      def rich_file
-        self.rich_file_file_name
-      end
-
-      def rich_file=(val)
-        self.rich_file_file_name = val
-      end
   
       def uri_cache
         uri_cache_attribute = read_attribute(:uri_cache)
@@ -74,5 +69,5 @@ module Rich
     end
   end
 
-  Rich::RichFile.send(:include, Backends::CarrierWave)
+  RichFile.send(:include, Backends::CarrierWave)
 end
